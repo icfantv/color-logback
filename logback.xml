@@ -1,0 +1,31 @@
+<configuration>
+
+  <appender name="foouilog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>/usr/local/tomcat/logs/fooui.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- rollover daily -->
+      <fileNamePattern>/usr/local/tomcat/logs/fooui-%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+        <maxHistory>10</maxHistory>
+        <timeBasedFileNamingAndTriggeringPolicy
+          class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <maxFileSize>25MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>
+    <encoder class="com.twc.logging.FooLayoutWrappingEncoder"/>
+  </appender>
+
+  <logger name="org.springframework">
+    <level value="info"/>
+    <appender-ref ref="foouilog"/>
+  </logger>
+
+  <logger name="java.sql">
+    <level value="warn"/>
+    <appender-ref ref="foouilog"/>
+  </logger>
+
+  <root level="INFO">
+    <appender-ref ref="foouilog"/>
+  </root>
+
+</configuration>
