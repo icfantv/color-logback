@@ -1,31 +1,52 @@
 <configuration>
 
-  <appender name="foouilog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>/usr/local/tomcat/logs/fooui.log</file>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <!-- rollover daily -->
-      <fileNamePattern>/usr/local/tomcat/logs/fooui-%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+  <appender name="foolog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+     <file>/usr/local/tomcat/logs/foo.log</file>
+     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <!-- rollover daily -->
+        <fileNamePattern>/usr/local/tomcat/logs/foo-%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
         <maxHistory>10</maxHistory>
         <timeBasedFileNamingAndTriggeringPolicy
-          class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-        <maxFileSize>25MB</maxFileSize>
-      </timeBasedFileNamingAndTriggeringPolicy>
-    </rollingPolicy>
-    <encoder class="com.twc.logging.FooLayoutWrappingEncoder"/>
+           class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+           <maxFileSize>25MB</maxFileSize>
+        </timeBasedFileNamingAndTriggeringPolicy>
+     </rollingPolicy>
+    <encoder class="com.foo.logging.FooLayoutWrappingEncoder">
+      <layout class="ch.qos.logback.classic.PatternLayout">
+        <pattern>
+          [level] - %logger{15}: %message%n %xEx{full}
+        </pattern>
+      </layout>
+    </encoder>
   </appender>
 
-  <logger name="org.springframework">
-    <level value="info"/>
-    <appender-ref ref="foouilog"/>
+  <logger name="com.google" additivity="false">
+     <level value="debug"/>
+     <appender-ref ref="foolog"/>
   </logger>
 
-  <logger name="java.sql">
-    <level value="warn"/>
-    <appender-ref ref="foouilog"/>
+  <logger name="org.mybatis" additivity="false">
+     <level value="debug"/>
+     <appender-ref ref="foolog"/>
   </logger>
 
-  <root level="INFO">
-    <appender-ref ref="foouilog"/>
+  <logger name="org.apache.ibatis" additivity="false">
+     <level value="debug"/>
+     <appender-ref ref="foolog"/>
+  </logger>
+
+  <logger name="org.springframework" additivity="false">
+     <level value="info"/>
+     <appender-ref ref="foolog"/>
+  </logger>
+
+  <logger name="com.foo." additivity="false">
+     <level value="trace"/>
+     <appender-ref ref="foolog"/>
+  </logger>
+
+  <root level="info">
+     <appender-ref ref="foolog"/>
   </root>
 
 </configuration>
